@@ -1,24 +1,17 @@
 import React, { useState }from "react";
-import '../index.css'
-// import Game from "./Game"
-import GetCode from "./GetCode";
-import EnterCode from "./EnterCode";
-import NameInput from "./NameInput";
-import styled from "styled-components";
-import { findAllByDisplayValue } from "@testing-library/react";
-// import {
-//   BrowserRouter as Router,
-//   Switch,
-//   Route,
-//   Link
-// } from "react-router-dom";
+import '../index.css';
+import Game from "./Game.jsx";
+import Start from "./Start.jsx";
 
 
-function Home (){
+
+function Home(){
 const [ game, setGame] = useState(null)
 
 function startGame({ playerName , code }){
-  //api request t ostart game
+  console.log(playerName, code)
+  //api request to start game
+  // POST /api/game/start
   
 
   setGame({
@@ -31,7 +24,7 @@ function startGame({ playerName , code }){
       name: 'Moshe',
       wins: 8
     },
-    isMyTurn: false,
+    isMyTurn: true,
     mySign:'x',
     board:[
       ['x', 'o', 'x'],
@@ -40,21 +33,23 @@ function startGame({ playerName , code }){
     ]
 
   });
+}
 
   function sendPlayerMove(position){
     //send move to api
-    // PUT 
+    // PUT /api/game/move
   }
 
   function updateGameState(){
     //request to check the game state
+    // GET /api/game/status
   }
 
     return (
         <div className="App">
-            {game ? (<Game onPlay={sendPlayerMove} />) : (<Start onStart={startGame}/>)}
+            {game ? (<Game game={game} onPlay={sendPlayerMove} />) : (<Start onStart={startGame}/>)}
         </div>
     )
 }
-}
+
 export default Home;

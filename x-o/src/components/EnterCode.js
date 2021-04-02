@@ -6,3 +6,5 @@ const EnterCode = ({ onChange }) => {
      </label>
  )
 }
+
+export default EnterCode;

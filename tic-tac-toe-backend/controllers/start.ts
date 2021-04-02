@@ -3,7 +3,7 @@ import {getGameByCode, getGameByIdentifier, joinGamePlayer} from '../services/ga
 export default async function startGame(req, res) {
 	//
 	const {playerName, code} = req.body || {};
-	const identifier = req.headers.token;
+	const identifier = req.headers.token && req.headers.token.substring(1);
 
 	if (identifier) {
 		const game = await getNewGameForPlayerA(identifier);
@@ -19,7 +19,20 @@ export default async function startGame(req, res) {
 async function getNewGameForPlayerA(identifier) {
 	const game = await getGameByIdentifier('A', identifier);
 
-	return {};
+	return {
+		identifier: identifier,
+		me: {
+		  name: game.playerA.name,
+		  wins: game.playerA.wins
+		},
+		opponent:{ 
+		  name: game.playerB.name,
+		  wins: game.playerB.wins
+		},
+		isMyTurn: game.currentTurn === "A",
+		mySign: game.xSign === "A" ? "x" : "o",
+		board: game.board
+	};
 }
 
 async function getNewGameForPlayerB(playerName, code) {
@@ -27,9 +40,23 @@ async function getNewGameForPlayerB(playerName, code) {
 
 	if (game.playerB) {
 		throw new Error('this game is already full');
+	
 	}
-
+	
 	const updatedGame = joinGamePlayer(game, playerName);
 
-	return {};
+	return {
+		identifier: "B" + updatedGame.playerB.identifier.toString(),
+		me: {
+		  name: updatedGame.playerB.name,
+		  wins: updatedGame.playerB.wins
+		},
+		opponent:{ 
+		  name: updatedGame.playerA.name,
+		  wins: updatedGame.playerA.wins
+		},
+		isMyTurn: updatedGame.currentTurn === "B",
+		mySign: updatedGame.xSign === "B" ? "x" : "o",
+		board: updatedGame.board
+	};
 }

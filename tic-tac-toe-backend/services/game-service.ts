@@ -39,14 +39,12 @@ export async function joinGamePlayer(game, playerName) {
 	};
 }
 
-export async function getGameByIdentifier(player, playerIdentifier) {
-	// return the game
+export function getGameByIdentifier(player, playerIdentifier) {
+	return Game.findOne({
+		[`player${player.toUpperCase()}.identifier`]: Types.ObjectId(playerIdentifier)
+	})
 }
 
-export async function getGameByCode(code) {
-	// return the game
-
-	return {
-		playerB: null
-	}
+export function getGameByCode(code) {
+	return Game.findOne({code})
 }

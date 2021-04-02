@@ -6,5 +6,5 @@ export default async function createGameCode(req, res) {
 
 	const {playerA, code} = await createGameFromPlayer(playerName);
 
-	res.json({code, identifier: playerA.identifier});
+	res.json({code, identifier: "A" + playerA.identifier.toString()});
 }
